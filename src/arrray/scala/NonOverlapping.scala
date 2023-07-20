@@ -12,6 +12,13 @@ Explanation: [1,3] can be removed and the rest of the intervals are non-overlapp
 object NonOverlapping {
   def eraseOverlapIntervals(intervals: Array[Array[Int]]): Int = {
     val arr = intervals.sortWith((v1, v2) => v1(1) < v2(1))
+    arr.tail.foldLeft((arr.head(1), 0))((tuple, v) => {
+      if (v.head >= tuple._1) (v.last, tuple._2) else (tuple._1, tuple._2 + 1)
+    })._2
+  }
+
+  def eraseOverlapIntervals2(intervals: Array[Array[Int]]): Int = {
+    val arr = intervals.sortWith((v1, v2) => v1(1) < v2(1))
     var maxFlag = arr.head(1)
     intervals.length - arr.tail.foldLeft(1)((count, v) => {
       if (v.head >= maxFlag) {
@@ -70,7 +77,6 @@ object NonOverlapping {
       Array(88, 89),
       Array(-83, -43)
     )
-    // println("size " + intervals04.size)
     val rs = eraseOverlapIntervals(intervals04)
     println(rs)
   }
